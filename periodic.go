@@ -1,0 +1,5 @@
+package blacktable
+
+func foo() {
+
+}
