@@ -11,19 +11,21 @@ exit: to quit
 `
 
 type BlackTable struct {
-	wg *sync.WaitGroup
+	wg       *sync.WaitGroup
+	taskChan chan interface{}
 }
 
 func NewBlackTable() (*BlackTable, error) {
 	bt := &BlackTable{
-		wg: &sync.WaitGroup{},
+		wg:       &sync.WaitGroup{},
+		taskChan: make(chan interface{}, 100),
 	}
 	return bt, nil
 }
 
 func (bt *BlackTable) Start() {
-	fmt.Println("Running Blacktable3")
-	// go bt.runDaemon()
+	fmt.Println("Running Blacktable")
+	go bt.startDaemon()
 	bt.wg.Add(1)
 	go bt.readStdIn()
 	bt.Wait()

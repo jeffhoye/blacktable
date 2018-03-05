@@ -10,6 +10,7 @@ import (
 )
 
 func (bt *BlackTable) AddConfigFile(fileName string) error {
+	fmt.Println("AddConfigFile", fileName)
 	return bt.AddCsvConfigFile(fileName)
 }
 
@@ -20,6 +21,7 @@ func (bt *BlackTable) AddCsvConfigFile(fileName string) error {
 	}
 	cr := newCsvReader(bufio.NewReader(csvFile))
 	for {
+		fmt.Println("Reading row from config file")
 		row, err := cr.Read()
 		if err != nil {
 			if err == io.EOF {
@@ -72,6 +74,29 @@ func (bt *BlackTable) readStdIn() {
 }
 
 func (bt *BlackTable) addCsvConfigRow(row []string) {
+	fmt.Println("addCsvConfigRow", row[0])
+	switch row[0] {
+	case "comment":
+		return
+	}
+	period := PeriodicTask{
+		Name: row[1],
+	}
+	switch row[0] {
+	case "listen":
+		fmt.Println("task listen")
+		// task := &Listen {
+
+		// }
+	case "send":
+		task := &NetworkMessage{
+			PeriodicTask: period,
+			Protocol:     row[5],
+		}
+		bt.taskChan <- task
+	case "echo":
+		fmt.Println("task echo")
+	}
 	fmt.Println("RowZ:", row[0])
 
 }

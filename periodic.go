@@ -1,5 +1,0 @@
-package blacktable
-
-func foo() {
-
-}

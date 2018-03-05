@@ -1,0 +1,4 @@
+comment,this is an example configuration file 
+listen,pingListener,0,-1,1,udp,127.0.0.1:9898,hello
+send,ping,5,5,-1,udp,127.0.0.1:9898,ping
+echo,hello,5,5,0,hello:
