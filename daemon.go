@@ -18,7 +18,7 @@ type PeriodicTask struct {
 }
 
 func (bt *BlackTable) startDaemon() {
-	fmt.Println("startDaemon")
+	// fmt.Println("startDaemon")
 	for {
 		select {
 		case task := <-bt.taskChan:

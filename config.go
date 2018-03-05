@@ -115,7 +115,7 @@ func (bt *BlackTable) parseTimes(t string) (int, error) {
 }
 
 func (bt *BlackTable) addCsvConfigRow(row []string, line int, fileName string) {
-	fmt.Println("addCsvConfigRow", row[0])
+	// fmt.Println("addCsvConfigRow", row[0])
 	switch row[0] {
 	case "comment":
 		return
@@ -154,7 +154,7 @@ func (bt *BlackTable) addCsvConfigRow(row []string, line int, fileName string) {
 	}
 	switch row[0] {
 	case "listen":
-		fmt.Println("task listen")
+		// fmt.Println("task listen")
 		if len(row) < 7 {
 			log.Println("Error in", fileName, "line", line, " Not enough columns:", len(row))
 		}
@@ -166,17 +166,17 @@ func (bt *BlackTable) addCsvConfigRow(row []string, line int, fileName string) {
 		}
 		bt.taskChan <- task
 	case "send":
-		if len(row) < 7 {
+		if len(row) < 8 {
 			log.Println("Error in", fileName, "line", line, " Not enough columns:", len(row))
 		}
 
 		task := &SendTask{
 			PeriodicTask: baseTask,
 			Protocol:     row[5],
-			IpPort:       row[6],
+			ToIpPort:     row[6],
+			Message:      []byte(row[7]),
 		}
 		bt.taskChan <- task
-		fmt.Println("addeed send task to chan")
 	case "echo":
 		fmt.Println("task echo")
 	}
