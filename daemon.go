@@ -2,8 +2,13 @@ package blacktable
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
+
+type Task interface {
+	Run(fromIp string, data []byte)
+}
 
 type PeriodicTask struct {
 	Name   string
@@ -12,32 +17,22 @@ type PeriodicTask struct {
 	Times  int // -1 = infinite
 }
 
-type NetworkMessage struct {
-	PeriodicTask
-	Protocol string // udp or tcp
-	IpPort   string // ip address and port
-	Message  []byte
-}
-
-func (nm *NetworkMessage) run(data []byte) {
-	fullMessage := append(nm.Message, data...)
-	fmt.Println(string(fullMessage))
-}
-
 func (bt *BlackTable) startDaemon() {
-	select {
-	case task := <-bt.taskChan:
-		bt.addTask(task)
+	fmt.Println("startDaemon")
+	for {
+		select {
+		case task := <-bt.taskChan:
+			bt.addTask(task)
+		}
 	}
 }
 
 func (bt *BlackTable) addTask(task interface{}) {
+	fmt.Println("addTask", task, reflect.TypeOf(task).Name())
 	switch task.(type) {
-	case NetworkMessage:
-		bt.addNetworkMessage(task.(*NetworkMessage))
+	case *SendTask:
+		bt.addSendTask(task.(*SendTask))
+	case *ListenTask:
+		bt.addListenTask(task.(*ListenTask))
 	}
-}
-
-func (bt *BlackTable) addNetworkMessage(nm *NetworkMessage) {
-	fmt.Println("Add Network Message")
 }
