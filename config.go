@@ -153,13 +153,13 @@ func (bt *BlackTable) addCsvConfigRow(row []string, line int, fileName string) {
 		Times:  times,
 	}
 	switch row[0] {
-	case "listen":
+	case "receive":
 		// fmt.Println("task listen")
 		if len(row) < 7 {
 			log.Println("Error in", fileName, "line", line, " Not enough columns:", len(row))
 		}
 
-		task := &ListenTask{
+		task := &ReceiveTask{
 			PeriodicTask: baseTask,
 			Protocol:     row[5],
 			OnIpPort:     row[6],

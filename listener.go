@@ -9,10 +9,10 @@ import (
 type IpListener struct {
 	Protocol string
 	OnIpPort string
-	Tasks    []*ListenTask
+	Tasks    []*ReceiveTask
 }
 
-func (ipl *IpListener) addTask(lt *ListenTask) {
+func (ipl *IpListener) addTask(lt *ReceiveTask) {
 	ipl.Tasks = append(ipl.Tasks, lt)
 }
 
@@ -60,12 +60,12 @@ func (ipl *IpListener) messageReceived(conn *net.UDPConn) {
 		fmt.Println("Error Reading")
 		return
 	} else {
-		fmt.Println("ListenTask", string(buf[0:n]))
+		fmt.Println("Receive:", string(buf[0:n]))
 		// fmt.Println("Package Done")
 	}
 }
 
-func (bt *BlackTable) addListenTask(lt *ListenTask) {
+func (bt *BlackTable) addListenTask(lt *ReceiveTask) {
 	listener, ok := bt.IpListeners[lt.Protocol][lt.OnIpPort]
 	if !ok {
 		listener = bt.addIpListener(lt.Protocol, lt.OnIpPort)
@@ -73,7 +73,7 @@ func (bt *BlackTable) addListenTask(lt *ListenTask) {
 	listener.addTask(lt)
 }
 
-type ListenTask struct {
+type ReceiveTask struct {
 	PeriodicTask
 	Protocol   string // udp or tcp
 	OnIpPort   string
@@ -81,6 +81,6 @@ type ListenTask struct {
 	Message    string // regexp
 }
 
-func (lt *ListenTask) run(ip string, data []byte) {
+func (rt *ReceiveTask) run(ip string, data []byte) {
 	fmt.Println(string(data))
 }

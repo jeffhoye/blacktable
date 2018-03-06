@@ -32,7 +32,7 @@ func (bt *BlackTable) addTask(task interface{}) {
 	switch task.(type) {
 	case *SendTask:
 		bt.addSendTask(task.(*SendTask))
-	case *ListenTask:
-		bt.addListenTask(task.(*ListenTask))
+	case *ReceiveTask:
+		bt.addListenTask(task.(*ReceiveTask))
 	}
 }

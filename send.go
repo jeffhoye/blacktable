@@ -15,7 +15,7 @@ type SendTask struct {
 
 func (st *SendTask) Run(fromIp string, data []byte) {
 	fullMessage := append(st.Message, data...)
-	fmt.Println("SendTask:",string(fullMessage))
+	fmt.Println("Send:", string(fullMessage))
 	//Connect udp
 	conn, err := net.Dial(st.Protocol, st.ToIpPort)
 	if err != nil {
@@ -32,7 +32,6 @@ func (st *SendTask) Run(fromIp string, data []byte) {
 }
 
 func (bt *BlackTable) addSendTask(st *SendTask) {
-	fmt.Println("Add Send Task")
 	// bt.Tasks[st.Name] = st
 
 	go st.Run("", []byte(""))
