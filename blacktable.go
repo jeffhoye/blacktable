@@ -3,6 +3,7 @@ package blacktable
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 const HELP_TXT = `
@@ -15,6 +16,7 @@ type BlackTable struct {
 	taskChan    chan interface{}                  // new tasks get added here
 	IpListeners map[string]map[string]*IpListener // protocol -> ipPort -> listener
 	Tasks       map[string]Task                   // name -> task
+	NextWake    time.Time
 }
 
 func NewBlackTable() (*BlackTable, error) {

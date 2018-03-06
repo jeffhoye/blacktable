@@ -60,7 +60,7 @@ func (ipl *IpListener) messageReceived(conn *net.UDPConn) {
 		fmt.Println("Error Reading")
 		return
 	} else {
-		fmt.Println("Receive:", string(buf[0:n]))
+		log.Println("Receive:", string(buf[0:n]))
 		// fmt.Println("Package Done")
 	}
 }
