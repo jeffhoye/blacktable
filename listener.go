@@ -65,12 +65,16 @@ func (ipl *IpListener) messageReceived(conn *net.UDPConn) {
 	}
 }
 
-func (bt *BlackTable) addListenTask(lt *ReceiveTask) {
-	listener, ok := bt.IpListeners[lt.Protocol][lt.OnIpPort]
+func (bt *BlackTable) addListenTask(rt *ReceiveTask) {
+	bt.enqueueTask(rt) //rt.Enqueue(bt)
+	// if len(rt.Name) > 0 {
+	// 	bt.Tasks[rt.Name] = rt
+	// }
+	listener, ok := bt.IpListeners[rt.Protocol][rt.OnIpPort]
 	if !ok {
-		listener = bt.addIpListener(lt.Protocol, lt.OnIpPort)
+		listener = bt.addIpListener(rt.Protocol, rt.OnIpPort)
 	}
-	listener.addTask(lt)
+	listener.addTask(rt)
 }
 
 type ReceiveTask struct {
@@ -81,6 +85,6 @@ type ReceiveTask struct {
 	Message    string // regexp
 }
 
-func (rt *ReceiveTask) run(ip string, data []byte) {
+func (rt *ReceiveTask) Run(ip string, data []byte) {
 	fmt.Println(string(data))
 }

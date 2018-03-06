@@ -14,7 +14,7 @@ type BlackTable struct {
 	wg          *sync.WaitGroup
 	taskChan    chan interface{}                  // new tasks get added here
 	IpListeners map[string]map[string]*IpListener // protocol -> ipPort -> listener
-	Tasks       map[string]*Task                  // name -> task
+	Tasks       map[string]Task                   // name -> task
 }
 
 func NewBlackTable() (*BlackTable, error) {
@@ -24,7 +24,7 @@ func NewBlackTable() (*BlackTable, error) {
 	bt := &BlackTable{
 		wg:          &sync.WaitGroup{},
 		taskChan:    make(chan interface{}, 100),
-		Tasks:       make(map[string]*Task, 0),
+		Tasks:       make(map[string]Task, 0),
 		IpListeners: ipListeners,
 	}
 	return bt, nil

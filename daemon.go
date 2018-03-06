@@ -8,6 +8,7 @@ import (
 
 type Task interface {
 	Run(fromIp string, data []byte)
+	GetSchedule() *PeriodicTask
 }
 
 type PeriodicTask struct {
@@ -15,6 +16,10 @@ type PeriodicTask struct {
 	Start  time.Time
 	Period time.Duration
 	Times  int // -1 = infinite
+}
+
+func (pt *PeriodicTask) GetSchedule() *PeriodicTask {
+	return pt
 }
 
 func (bt *BlackTable) startDaemon() {
@@ -35,4 +40,12 @@ func (bt *BlackTable) addTask(task interface{}) {
 	case *ReceiveTask:
 		bt.addListenTask(task.(*ReceiveTask))
 	}
+}
+
+func (bt *BlackTable) enqueueTask(t Task) {
+	schedule := t.GetSchedule()
+	if len(schedule.Name) > 0 {
+		bt.Tasks[schedule.Name] = t
+	}
+
 }

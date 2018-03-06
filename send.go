@@ -32,7 +32,6 @@ func (st *SendTask) Run(fromIp string, data []byte) {
 }
 
 func (bt *BlackTable) addSendTask(st *SendTask) {
-	// bt.Tasks[st.Name] = st
-
+	bt.enqueueTask(st) //st.Enqueue(st)
 	go st.Run("", []byte(""))
 }
