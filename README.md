@@ -4,6 +4,9 @@
 ```
 blacktable examples/pingself.csv
 exit
+
+blacktable <<< receive,pingListener,0,-1,1,udp,127.0.0.1:9898,^hello,*,hello,0
+blacktable <<< send,ping,5,3,5,udp,127.0.0.1:9898,ping,,
 ```
 
 ## installation

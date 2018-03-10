@@ -128,6 +128,7 @@ func (bt *BlackTable) addCsvConfigRow(row []string, line int, fileName string) {
 
 	if len(row) < 5 {
 		log.Println("Error in", fileName, "line", line, " Not enough columns:", len(row))
+		return
 	}
 
 	start, err := bt.parseStart(row[2])
